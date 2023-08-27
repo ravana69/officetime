@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time Display</title>
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 3rem;
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
+
+  #timeDisplay {
+    text-align: center;
+  }
+
+  #timeLeft {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+  }
+</style>
+</head>
+<body>
+<div id="timeDisplay"></div>
+<div id="timeLeft"></div>
+
+<script>
+function updateTime() {
+  const now = new Date();
+  const hours = now.getHours() % 12 || 12; // Convert to 12-hour format
+  const minutes = now.getMinutes();
+  const seconds = now.getSeconds();
+  
+  const formattedTime = `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${now.getHours() >= 12 ? 'PM' : 'AM'}`;
+  
+  document.getElementById('timeDisplay').textContent = formattedTime;
+
+  // Calculate time left for office to be over (5:00 PM)
+  const officeClosingTime = new Date(now);
+  officeClosingTime.setHours(17, 0, 0, 0); // Set office closing time to 5:00 PM
+  const timeLeft = officeClosingTime - now;
+  const hoursLeft = Math.floor(timeLeft / 3600000);
+  const minutesLeft = Math.floor((timeLeft % 3600000) / 60000);
+  
+  document.getElementById('timeLeft').textContent = `Those who know: ${hoursLeft} hours and ${minutesLeft} minutes`;
+}
+
+// Update time every second
+updateTime();
+setInterval(updateTime, 1000);
+</script>
+</body>
+</html>
